@@ -49,6 +49,7 @@ class BookUpdateForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
+            field.required = True
     
     class Meta:
         model = Book

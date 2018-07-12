@@ -177,7 +177,7 @@ class BookUpdateView(LoginRequiredMixin, UpdateView):
     # 使用BookCreateForm
     form_class = BookUpdateForm
     template_name = "app/book_update.html"
-    success_url = reverse_lazy("app:app_list")
+    success_url = reverse_lazy("app:app_book_list")
 
 
 class TestMixin(object):
@@ -198,6 +198,7 @@ class TestMixin(object):
             if len(err) > 0:
                 err_str = '{}: {}'.format(label , err[0].message)
             return JsonResponse({'status': 1, 'msg': err_str})
+        
     
 class BookCreateView(LoginRequiredMixin, TestMixin, CreateView):
     # 使用form_class 或者model, fields
