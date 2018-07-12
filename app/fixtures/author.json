@@ -1,0 +1,14 @@
+[
+  {
+    "model": "app.author",
+    "fields": {
+      "name": "zwj"
+    }
+  },
+  {
+    "model": "app.author",
+    "fields": {
+      "name": "zhangweijian"
+    }
+  }
+]

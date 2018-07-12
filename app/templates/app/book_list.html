@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}书籍列表{% endblock %}
+
+{% block breadcrumb %}
+    <li><a>书籍列表</a></li>
+{% endblock %}
+
+
+{% block content %}
+    <div class="col-md-12" style="height: 500px">
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <div class="panel-title">
+                <span class="page-header" style="font-size: 15px;">列表-{{ now|date:'y-m-d' }}</span>
+                <a href="{% url 'app:app_book_create' %}"><button class="btn btn-primary pull-right">Add</button></a>
+            </div>
+        </div>
+    <div class="panel-body">
+        <table class="table table-bordered table-hover">
+            <tr>
+                <th>
+                    书名
+                </th>
+                <th>
+                    价格(RMB)
+                </th>
+                <th>
+                    作者
+                </th>
+                <th>操作</th>
+            </tr>
+            {% for book in object_list %}
+                <tr>
+                    <td>
+                        <a href="{% url 'app:app_book_detail' book.id %}">{{ book.name }}</a>
+                    </td>
+                    <td>
+                        {{ book.price }}
+                    </td>
+                    <td><a href="{% url 'app:app_list_by_author' book.author.name %}">{{ book.author.name }}</a></td>
+                    <td>
+                        <div class="btn-group">
+                                <a href="{% url 'app:app_book_update' book.id %}">
+                                    <button class="btn btn-primary btn-xs">更新</button>
+
+                                </a>
+                                <a>
+                                    <button class="btn btn-danger btn-xs bookdelete" data-url=
+                                            "{% url 'app:app_book_delete' book.pk %}">删除</button>
+                                </a>
+                            </div>
+                    </div>
+                    </td>
+
+                </tr>
+            {% endfor %}
+        </table>
+        {% include 'paginator.html' %}
+    </div>
+    </div>
+    </div>
+{% endblock %}
+
+{% block footer_script %}
+    <script>
+        $("#app_menu").addClass("active");
+        $("#menu_app_book_list").addClass("active");
+
+        //跨站伪造提交ajax 加上这些代码
+        var csrftoken = $.cookie('csrftoken');
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+
+        $(".bookdelete").click(function (event) {
+            event.preventDefault();
+            var deleteurl = $(this).attr("data-url");
+            $.ajax({
+                url: deleteurl,
+                type: "POST",
+                success: function (resp, status) {
+                    console.log(resp);
+                    layer.open({
+                        type: 0,
+                        title: "添加成功",
+                        content: "删除成功",
+                        icon: 1,
+                        skin: "layui-layer-lan"
+                    });
+{#                    if (resp.status === "0") {#}
+                        location.reload();
+{#                    }#}
+                },
+                error: function (xhr, status, error) {
+                    console.log(status, error)
+                }
+            });
+        });
+
+
+    </script>
+{% endblock %}

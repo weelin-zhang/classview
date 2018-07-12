@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}书籍列表{% endblock %}
+
+{% block breadcrumb %}
+    <li><a>书籍详情</a></li>
+{% endblock %}
+
+
+{% block content %}
+    <div class="col-md-6" style="height: 500px">
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <div class="panel-title">
+                <span class="page-header" style="font-size: 15px;">详情-{{ now|date:'y-m-d' }}</span>
+            </div>
+        </div>
+
+    <div class="panel-body">
+        <table class="table table-bordered table-hover">
+            <tr>
+                <th>
+                    书名
+                </th>
+                <td>
+                    {{ book.name }}
+                </td>
+            </tr>
+            <tr>
+                <th>价格(RMB)</th>
+                <td>{{ book.price }}</td>
+            </tr>
+            <tr>
+                <th>作者</th>
+                <td>{{ book.author.name }}</td>
+            </tr>
+        </table>
+    </div>
+    </div>
+    </div>
+{% endblock %}

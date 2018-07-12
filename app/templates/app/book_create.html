@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}增加书籍{% endblock %}
+
+{% block breadcrumb %}
+    <li><a>增加书籍</a></li>
+{% endblock %}
+
+
+{% block content %}
+    <div class="col-md-6" style="height: 500px">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    <span class="page-header" style="font-size: 15px;">新增-{{ now|date:'y-m-d' }}</span>
+                </div>
+            </div>
+
+            <div class="panel-body">
+            <form class="form-inline" id="bookcreateform" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="button" id="bookcreate" value="提交">
+{#                <input type="submit" value="提交">#}
+            </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block footer_script %}
+{#    <script src="{% static 'js/csrf.js' %}"></script>#}
+    <script>
+    //跨站伪造提交ajax 加上这些代码
+    var csrftoken = $.cookie('csrftoken');
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+
+        $(function () {
+            $("#bookcreate").click(function (event) {
+                event.preventDefault();
+                $.ajax({
+                    url: "{% url 'app:app_book_create' %}",
+                    data: $("#bookcreateform").serialize(),
+                    type: "POST",
+                    dataType: "json",
+{#                    sendBefore: function () {#}
+{#                        console.log("sendbefore")#}
+{#                    },#}
+                    success: function (resp, status) {
+                        console.log(resp);
+                        layer.open({
+                        type: 0,
+                        time: false,
+                        title: "添加成功",
+                        content: resp.msg,
+                        icon: 1,
+                        skin: "layui-layer-lan"
+                        });
+                        if(resp.status === "0") {
+                            location.href = resp.redirect_url;
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(status, error)
+                    }
+                });
+            });
+        });
+
+    </script>
+
+{% endblock %}

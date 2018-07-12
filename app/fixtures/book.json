@@ -1,0 +1,50 @@
+[
+  {
+    "model": "app.book",
+    "fields": {
+      "name": "一千零一夜",
+      "author": 3,
+      "price": 49
+    }
+  },
+  {
+    "model": "app.book",
+    "fields": {
+      "name": "别碰我",
+      "author": 1,
+      "price": 29
+    }
+  },
+  {
+    "model": "app.book",
+    "fields": {
+      "name": "python教程",
+      "author": 2,
+      "price": 64.89
+    }
+  },
+  {
+    "model": "app.book",
+    "fields": {
+      "name": "c语言",
+      "author": 3,
+      "price": 89
+    }
+  },
+  {
+    "model": "app.book",
+    "fields": {
+      "name": "mysql入门",
+      "author": 2,
+      "price": 57.00
+    }
+  },
+  {
+    "model": "app.book",
+    "fields": {
+      "name": "redis运维开发",
+      "author": 1,
+      "price": 67.89
+    }
+  }
+]

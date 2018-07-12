@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}增加作者{% endblock %}
+
+{% block breadcrumb %}
+    <li><a>增加作者</a></li>
+{% endblock %}
+
+
+{% block content %}
+    <div class="col-md-6" style="height: 500px">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    <span class="page-header" style="font-size: 15px;">详情-{{ now|date:'y-m-d' }}</span>
+                </div>
+            </div>
+
+            <div class="panel-body">
+            <form class="form-inline" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="提交">
+            </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

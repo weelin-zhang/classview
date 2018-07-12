@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}作者列表{% endblock %}
+
+{% block breadcrumb %}
+    <li><a>作者列表</a></li>
+{% endblock %}
+
+
+{% block content %}
+    <div class="col-md-12" style="height: 500px">
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <div class="panel-title">
+                <span class="page-header" style="font-size: 15px;">列表-{{ now|date:'y-m-d' }}</span>
+                <a href="{% url 'app:app_author_create' %}"><button class="btn btn-primary pull-right">Add</button></a>
+            </div>
+        </div>
+    <div class="panel-body">
+        <table class="table table-bordered table-hover">
+            <tr>
+                <th>
+                    姓名
+                </th>
+            </tr>
+            {% for author in object_list %}
+                <tr>
+                    <td>
+                        {{ author.name }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% include 'paginator.html' %}
+    </div>
+    </div>
+    </div>
+{% endblock %}
+
+{% block footer_script %}
+    <script>
+        $("#app_menu").addClass("active");
+        $("#menu_app_author_list").addClass("active");
+    </script>
+{% endblock %}

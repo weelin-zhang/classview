@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}书籍编辑{% endblock %}
+
+{% block breadcrumb %}
+    <li><a>编辑</a></li>
+{% endblock %}
+
+
+{% block content %}
+    <div class="col-md-10" style="height: 500px">
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <div class="panel-title">
+                <span class="page-header" style="font-size: 15px;">编辑  <span style="font-size:20px">
+                    [{{ book.name }}]</span></span>
+            </div>
+        </div>
+
+    <div class="panel-body">
+        <form class="form" method="post">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-group {% if field.errors %}has-error{% endif %}">
+                    <label class="col-md-2">
+                        {{ field.label }}
+                        {% if field.required %}<span class="text-red">*</span>{% endif %}
+                    </label>
+                    <div class="col-md-10">
+                        {{ field }}
+                    </div>
+                </div>
+            {% endfor %}
+{#            {{ form.as_p }}#}
+            <input type="submit" value="Update">
+        </form>
+    </div>
+    </div>
+    </div>
+{% endblock %}
+
