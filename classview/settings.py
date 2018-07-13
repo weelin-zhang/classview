@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app',
+    'rest_framework',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -125,3 +127,17 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+
+
+# rest_framework 认证
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        # 用户名和密码认证
+        # post http://admin:sinochem@127.0.0.1:8000/api/book/create/
+        # 'rest_framework.authentication.BasicAuthentication',
+       
+        # token 认证
+        # request header中加入:Authorization: Token 2dfc8881a9f5c8183c7e80c649d1642969f2820e
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}

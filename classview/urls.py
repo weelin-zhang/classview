@@ -33,4 +33,7 @@ urlpatterns = [
     # [11/Jul/2018 04:20:39] "GET /app/index/?a=100 HTTP/1.1" 200 27
     # url(r'.*', RedirectView.as_view(query_string=True, pattern_name="app:app_index")),
     url(r're/de/$', NewRedirectView.as_view()),
+    
+    # api
+    url(r'^api/', include("app.api.urls", namespace="api")),
 ]

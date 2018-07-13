@@ -12,4 +12,4 @@ class Author(models.Model):
 class Book(models.Model):
     name = models.CharField(verbose_name="书名", max_length=64, unique=True)
     price = models.DecimalField(verbose_name="价格", max_digits=7, decimal_places=2)
-    author = models.ForeignKey(Author, verbose_name="作者", related_name="books", blank=True)
+    author = models.ForeignKey(Author, verbose_name="作者", related_name="books")
