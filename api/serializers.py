@@ -1,6 +1,8 @@
 from rest_framework import serializers
-from ..models import Book, Author
+from app.models import Book, Author
 
+# blog
+from blog.models import Post
 
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
@@ -17,3 +19,10 @@ class AuthorSerializer(serializers.ModelSerializer):
         model = Author
         fields = ("id", "name", "books")
 
+
+# blog
+
+class BlogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ("id", "title", "body")

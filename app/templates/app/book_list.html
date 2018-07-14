@@ -14,6 +14,7 @@
             <div class="panel-title">
                 <span class="page-header" style="font-size: 15px;">列表-{{ now|date:'y-m-d' }}</span>
                 <a href="{% url 'app:app_book_create' %}"><button class="btn btn-primary pull-right">Add</button></a>
+                <a id="gettoken"><button class="btn btn-primary pull-right">GETTOKEN</button></a>
             </div>
         </div>
     <div class="panel-body">
@@ -105,7 +106,31 @@
                 }
             });
         });
+{#        拿到token #}
+        $(function () {
+          $("#gettoken").click(function () {
+              var u="{{ request.user.username }}";
+              var p="{{ request.user.password }}";
+              $.ajax({
+                  url: "{% url 'api:api_auth_token' %}",
+                  data: {username:u, password:"xxxxxxx"},
+                  dataType: "json",
+                  type: "POST",
+                  success: function (resp, status) {
+                      alert(resp.token);
+                      console.log(resp);
+                      console.log(resp.key);
+                  },
+                  error: function (xhr, status, err) {
+                      console.log(err)
+                  }
 
+              })
+          });
+
+
+         //js end
+        });
 
     </script>
 {% endblock %}

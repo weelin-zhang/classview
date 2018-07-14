@@ -35,5 +35,5 @@ urlpatterns = [
     url(r're/de/$', NewRedirectView.as_view()),
     
     # api
-    url(r'^api/', include("app.api.urls", namespace="api")),
+    url(r'^api/', include("api.urls", namespace="api")),
 ]

@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
-from .serializers import AuthorSerializer, BookSerializer
-from ..models import Author, Book
+from .serializers import AuthorSerializer, BookSerializer, BlogSerializer
+from app.models import Author, Book
+from blog.models import Post
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -33,7 +34,7 @@ class CreateAuthorView(APIView):
     #REST_FRAMEWORK = {'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework.authentication.TokenAuthentication', )
     # authentication_classes = (TokenAuthentication,)
     
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
     
     def post(self, request):
         serializer = self.model_serializer(data=request.data)
@@ -55,7 +56,7 @@ class UpdateDeleteAuthorView(APIView):
     #REST_FRAMEWORK = {'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework.authentication.TokenAuthentication', )
     # authentication_classes = (TokenAuthentication,)
     
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
     
     model = Author
     model_serializer = AuthorSerializer
@@ -206,10 +207,40 @@ class BookViewSet(viewsets.ModelViewSet):
         Instantiates and returns the list of permissions that this view requires.
         """
         # 自定义每一个方法的权限
-        if self.action == 'list':
+        if self.action == 'list' or self.action == 'retrieve':
             # permission_classes = [IsAuthenticated]
             permission_classes = [AllowAny]
         else:
-            permission_classes = [AllowAny]
+            permission_classes = [IsAdminUser]
+            # permission_classes = [IsAuthenticated]
+            # permission_classes = [AllowAny]
         return [permission() for permission in permission_classes]
 
+
+# blog
+
+class BlogViewSet(viewsets.ModelViewSet):
+    # permission_classes = [AllowAny]
+    queryset = Post.objects.all()
+    serializer_class = BlogSerializer
+    #
+    
+
+# 自定义获取token的视图
+
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
+from django.contrib.auth.mixins import LoginRequiredMixin
+class CustomAuthToken(LoginRequiredMixin, ObtainAuthToken):
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data,
+                                           context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({
+            'token': token.key,
+            'user_id': user.pk,
+            'email': user.email
+        })
