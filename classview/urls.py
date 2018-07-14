@@ -23,7 +23,7 @@ urlpatterns = [
     url(r'^accounts/', include('accounts.urls', namespace='accounts')),
     
     # url(r'^$', TemplateView.as_view(template_name="base.html"), name="home"),
-    url(r'^$', HomeView.as_view(), name="home"),
+    url(r'^home/$', HomeView.as_view(), name="home"),
     url(r'^app/', include('app.urls', namespace='app')),
     
     # 其它请求所有重定向到首页
@@ -36,4 +36,8 @@ urlpatterns = [
     
     # api
     url(r'^api/', include("api.urls", namespace="api")),
+    
+    # all in
+    url(r'.*', RedirectView.as_view(pattern_name="home", query_string=True),),
 ]
+
