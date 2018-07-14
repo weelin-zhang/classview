@@ -93,21 +93,30 @@ class UpdateDeleteAuthorView(APIView):
 
 # book list
 class BookListView(generics.ListAPIView):
+    '''
+    图书列表
+    '''
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
 
 class BookDetailView(generics.RetrieveAPIView):
+    '''
+    图书详情
+    '''
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     
 # create
 class CreateBookView(APIView):
+    '''
+    新增图书
+    '''
     # settings中存在全局配置定义时REST_FRAMEWORK.DEFAULT_AUTHENTICATION_CLASSES时,可省去),authentition_class
     #REST_FRAMEWORK = {'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework.authentication.TokenAuthentication', )
     # authentication_classes = (TokenAuthentication,)
     
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
     
     def post(self, request):
         serializer = BookSerializer(data=request.data)
@@ -142,6 +151,12 @@ class UpdateDeleteBookView(APIView):
     
     # 更新
     def put(self, request, pk):
+        '''
+        图书修改
+        :param request:
+        :param pk:
+        :return:
+        '''
         # instance = self.get_object(pk)
         instance = get_object_or_404(self.model, pk=pk)
         serializer = self.model_serializer(instance, data=request.data)
@@ -158,6 +173,12 @@ class UpdateDeleteBookView(APIView):
                             status=status.HTTP_400_BAD_REQUEST)
         
     def delete(self, request, pk):
+        '''
+        图书删除
+        :param request:
+        :param pk:
+        :return:
+        '''
         # instance = self.get_object(pk)
         instance = get_object_or_404(self.model, pk=pk)
         serializer = self.model_serializer(instance)
@@ -191,3 +212,4 @@ class BookViewSet(viewsets.ModelViewSet):
         else:
             permission_classes = [AllowAny]
         return [permission() for permission in permission_classes]
+

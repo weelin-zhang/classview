@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'app',
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_framework_swagger',
 ]
 
 MIDDLEWARE = [
@@ -134,10 +135,11 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         # 用户名和密码认证
         # post http://admin:sinochem@127.0.0.1:8000/api/book/create/
-        # 'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
        
         # token 认证
         # request header中加入:Authorization: Token 2dfc8881a9f5c8183c7e80c649d1642969f2820e
-        'rest_framework.authentication.TokenAuthentication',
+        # 'rest_framework.authentication.TokenAuthentication',
+        # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     )
 }
