@@ -3,12 +3,12 @@ from django.views.generic import View
 from django.views.generic.edit import CreateView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
-from django.http import JsonResponse, HttpResponseForbidden
+from django.http import JsonResponse
 from django.core.urlresolvers import reverse_lazy
 from .models import Post
 from .forms import PostModelForm
 # Create your views here.
-
+from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import permission_required
 from django.core.exceptions import  PermissionDenied
 
@@ -42,10 +42,11 @@ class PostCreateView(CreateView):
     template_name = "blog/post_create.html"
     
     
+    @method_decorator(permission_required('blog.add_post', raise_exception=True))
     def dispatch(self, request, *args, **kwargs):
         # 此处可以判断用户是否有权限进行
-        if not request.user.has_perm("blog.add_post"):
-            raise PermissionDenied
+        # if not request.user.has_perm("blog.add_post"):
+        #     raise PermissionDenied
         return  super().dispatch(request, *args, **kwargs)
         
     def form_valid(self, form):
