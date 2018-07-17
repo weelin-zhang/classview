@@ -3,7 +3,6 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic.base import View
-from django.views.generic.base import TemplateView
 from django.views.generic.base import TemplateView, RedirectView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
@@ -44,17 +43,6 @@ class IndexView(View):
 from django.views.generic.base import TemplateResponseMixin # 模板渲染
 from django.views.generic.base import ContextMixin          # 上下文
 from django.views.generic.base import View                  # 视图
-
-class HomeView(TemplateView):
-    template_name = "home.html"
-    # 可以重写方法
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['self_define_var'] = "自定义上下文"
-        return context
-
-
-
 
 
 class NewRedirectView(RedirectView):
@@ -221,7 +209,6 @@ class BookDeleteView(LoginRequiredMixin, DeleteView):
         self.object.delete()
         return JsonResponse({"status":"0", "msg": "{}删除成功".format(book_name), "redirect_url": success_url})
         
-    
     
 
 

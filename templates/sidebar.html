@@ -44,6 +44,26 @@
           </ul>
 
       </li>
+
+      <li id="app_menu" class="treeview">
+          <a href="#">
+              <i class="fa fa-server"></i> <span>博客管理</span>
+              <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+          </span>
+          </a>
+          <ul class="treeview-menu">
+              <li id="menu_blog_list"><a href="{% url 'blog:post_list' %}"><i class="fa fa-circle-o"></i>
+                  博客列表</a></li>
+{#              <li id="menu_app_author_list"><a href="{% url 'app:app_author_list' %}"><i class="fa fa-circle-o"></i>作者列表</a></li>#}
+              <li id="menu_blog_post_json"><a href="{% url 'blog:post_show' %}"><i class="fa
+            fa-circle-o"></i>测试permission</a></li>
+          </ul>
+
+      </li>
+
+
+
       <li id="app_menu" class="treeview {% if not request.user.is_superuser %}hide{% endif %}">
           <a href="#">
             <i class="fa fa-object-group"></i> <span>api管理</span>
@@ -129,6 +149,8 @@
 
       </li>
 
+      -->
+    {% if has_group_add_perm %}
       <li id="menu_accounts" class="treeview">
             <a href="#">
               <i class="fa fa-users"></i> <span>用户管理</span>
@@ -138,7 +160,7 @@
               <li id="menu_user"><a href="#"><i class="fa fa-circle-o"></i> 用户列表</a></li>
           </ul>
       </li>
-      -->
+    {% endif %}
     </ul>
   </section>
   <!-- /.sidebar -->

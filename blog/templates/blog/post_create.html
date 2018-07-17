@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}增加博客{% endblock %}
+
+{% block breadcrumb %}
+    <li><a>增加博客</a></li>
+{% endblock %}
+
+
+{% block content %}
+    <div class="col-md-10" style="height: 500px">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    <span class="page-header" style="font-size: 15px;">新增-{{ now|date:'y-m-d' }}</span>
+                </div>
+            </div>
+
+            <div class="panel-body">
+            <form class="form form-horizontal" id="bookcreateform" method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="">
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">
+                            {{ field.label }}
+                            {% if field.field.required %}<span class="text-red">*</span>{% endif %}
+                        </label>
+                        <div class="col-md-10">
+                            {{ field }}
+                        </div>
+                    </div>
+                    </div>
+                {% endfor %}
+{#                {{ form.as_p }}#}
+{#                <input type="button" id="bookcreate" value="提交">#}
+{#                <input type="submit" value="提交">#}
+
+
+                <div class="box-footer text-center">
+                    <input type="button" id="bookcreate" class="btn btn-primary" value="提交">
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block footer_script %}
+    <script>
+    //跨站伪造提交ajax 加上这些代码
+    var csrftoken = $.cookie('csrftoken');
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+
+        $(function () {
+            $("#bookcreate").click(function (event) {
+                event.preventDefault();
+                $.ajax({
+                    url: "{% url 'blog:post_create' %}",
+                    data: $("#bookcreateform").serialize(),
+                    type: "POST",
+                    dataType: "json",
+                    success: function (resp, status) {
+                        console.log(resp);
+                        if(resp.status === "0") {
+                            layer.open({
+                                type: 0,
+                                title: "添加成功",
+                                content: resp.msg,
+                                icon: 1,
+                                skin: "layui-layer-lan"
+                            });
+                        }else {
+                            layer.open({
+                                type: 0,
+                                title: "failed",
+                                content: resp.msg,
+                                icon: 2,
+                                skin: "layui-layer-lan"
+                            });
+
+                        }
+                        if(resp.status === "0") {
+                            location.href = resp.redirect_url;
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(status, error)
+                    }
+                });
+            });
+        });
+
+    </script>
+
+{% endblock %}

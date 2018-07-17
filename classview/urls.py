@@ -15,8 +15,15 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from app.views import HomeView, TemplateView, RedirectView, NewRedirectView
+from django.views.generic import RedirectView
+from .views import HomeView, TemplateView
 
+from app.views import NewRedirectView
+
+from .views import permission_denied, page_error, page_not_found
+handler403 = permission_denied
+handler404 = page_not_found
+handler500 = page_error
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -36,6 +43,9 @@ urlpatterns = [
     
     # api
     url(r'^api/', include("api.urls", namespace="api")),
+    
+    # blog
+    url(r'^blog/', include("blog.urls", namespace="blog")),
     
     # all in
     url(r'.*', RedirectView.as_view(pattern_name="home", query_string=True),),
