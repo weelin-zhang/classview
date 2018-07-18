@@ -38,6 +38,7 @@ def assign_perm(perm, user_or_group, obj=None):
 
 
 def remove_perm(perm, user_or_group=None, obj=None):
+
     '''
         针对(object permission, gloal permission)
         当obj == None 删除user或者group的global  permission, 该permission的移除不会作用到某一个obj上, 该user,group必须重新获取才能检查得到权限移除
@@ -50,7 +51,9 @@ def remove_perm(perm, user_or_group=None, obj=None):
     '''
 
 
+
 def get_perms(user_or_group, obj):
+
     '''
         针对(object permission)
         获取user或者group针对obj拥有的object permission
@@ -58,6 +61,8 @@ def get_perms(user_or_group, obj):
         eg: ['change_post']
     '''
     pass
+
+
 
 def get_user_perms(user, obj):
     '''
@@ -68,7 +73,10 @@ def get_user_perms(user, obj):
     '''
     pass
 
+
+
 def get_group_perms(group, obj):
+
     '''
         针对(object permission)
         获取user针对obj拥有的object permission
@@ -77,7 +85,10 @@ def get_group_perms(group, obj):
     '''
     pass
 
+
+
 def get_perms_for_model(cls):
+
     '''
         cls: Model模型
         返回: 这个模型拥有的所有的Permission集合:
@@ -85,7 +96,9 @@ def get_perms_for_model(cls):
     '''
 
 
+
 def get_users_with_perms(obj, attach_perms=False, with_superusers=False, with_group_users=True):
+
     """
         针对(object permission)
         获得拥有给定对象obj的任一object permission的所有user的集合(返回拥有对象obj的object permission的user)
@@ -104,7 +117,9 @@ def get_users_with_perms(obj, attach_perms=False, with_superusers=False, with_gr
     """
 
 
+
 def get_groups_with_perms(obj, attach_perms=False):
+
     """
         针对(object permission)
         获得拥有给定对象obj的任一object permission的所有group的集合(返回拥有对象obj的object permission的group)
@@ -114,10 +129,9 @@ def get_groups_with_perms(obj, attach_perms=False):
 
 
 
-
-
 def get_objects_for_user(user, perms, klass=None, use_groups=True, any_perm=False,
                          with_superuser=True, accept_global_perms=True):
+
     """
         默认针对(object permission), 当accept_global_perms=True时, global permission可以计算在内
         该方法通过传入 user, perms(app_label.codename string or list of app_label.codename string)来确定满足条件的objects
@@ -135,7 +149,9 @@ def get_objects_for_user(user, perms, klass=None, use_groups=True, any_perm=Fals
     """
 
 
+
 def get_objects_for_group(group, perms, klass=None, any_perm=False, accept_global_perms=True):
+
     """
         默认针对(object permission), 当accept_global_perms=True时, global permission可以计算在内
         group: 用户组
