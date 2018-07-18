@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_framework_swagger',
     'blog',
+    'deployment',
+    'guardian',
 ]
 
 MIDDLEWARE = [
@@ -74,6 +76,11 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'classview.wsgi.application'
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend', # this is default
+    'guardian.backends.ObjectPermissionBackend',
+)
 
 
 # Database

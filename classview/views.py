@@ -19,10 +19,6 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['self_define_var'] = "自定义上下文"
-        
-        # 加入判断用户是否有用户管理逻辑
-        has_group_add_perm = self.request.user.has_perm("auth.add_group")
-        context['has_group_add_perm'] = has_group_add_perm
         return context
     
     

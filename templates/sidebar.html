@@ -109,24 +109,22 @@
                             fa-list-alt"></i>任务列表</a></li>
                       </ul>
                   </li>
-
-
-
               </ul>
       </li>
-        <!--
-          <li id="menu_accounts" class="treeview">
+          <li id="menu_deployment" class="treeview">
             <a href="#">
-              <i class="fa fa-area-chart"></i> <span>统计</span>
+              <i class="fa fa-area-chart"></i> <span>任务发布</span>
               <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span>
             </a>
           <ul class="treeview-menu">
-              <li id="menu_user"><a href="#"><i class="fa fa-circle-o"></i> 告警统计</a></li>
-              <li id="menu_project"><a href="#"><i class="fa fa-circle-o"></i> 日、周报表</a></li>
-              <li id="menu_project"><a href="#"><i class="fa fa-circle-o"></i> 综合对比</a></li>
+              <li id="menu_deployment_list"><a href="{% url 'deployment:deployment_list' %}"><i class="fa
+              fa-circle-o"></i>
+                  发布列表</a></li>
+              <li id="menu_deployment_order"><a href="#"><i class="fa fa-circle-o"></i> 发布清单</a></li>
           </ul>
 
       </li>
+        <!--
           <li id="menu_accounts" class="treeview">
             <a href="#">
               <i class="fa fa-optin-monster"></i> <span>系统管理</span>
@@ -150,7 +148,7 @@
       </li>
 
       -->
-    {% if has_group_add_perm %}
+    {% if request.user.is_superuser %}
       <li id="menu_accounts" class="treeview">
             <a href="#">
               <i class="fa fa-users"></i> <span>用户管理</span>

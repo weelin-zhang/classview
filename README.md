@@ -156,7 +156,7 @@ def get_objects_for_group(group, perms, klass=None, any_perm=False, accept_globa
         默认针对(object permission), 当accept_global_perms=True时, global permission可以计算在内
         group: 用户组
         perms: 用户需要拥有的object permissions(perms中的 perm必须属于同一个Model, 即相同的app_label)
-        klass: Model or queryset or manager
+        klass: Model or queryset or manager(使用manager)时，结果也是个Manager
         accept_global_perms: 默认True, accept_global_perms可以被当做object permission计算在内
 
     """

@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
-{% block title %}博客列表{% endblock %}
+{% block title %}发布列表{% endblock %}
 
 {% block breadcrumb %}
-    <li><a>博客列表</a></li>
+    <li><a>发布列表</a></li>
 {% endblock %}
 
 
@@ -13,59 +13,59 @@
         <div class="panel-heading">
             <div class="panel-title">
                 <span class="page-header" style="font-size: 15px;">列表-{{ now|date:'y-m-d' }}</span>
-                <a href="{% url 'blog:post_create' %}"><button class="btn btn-primary
-                pull-right">Add</button></a>
+                {% if request.user.is_superuser %}
+                    <a href="#"><button class="btn btn-primary pull-right">Add</button></a>
+                {% endif %}
             </div>
         </div>
     <div class="panel-body">
+        {% if deployments %}
         <table class="table table-bordered table-hover">
             <tr>
                 <th>
                     标题
                 </th>
                 <th>
-                    内容
+                    项目
                 </th>
                 <th>操作</th>
             </tr>
-            {% for post in posts %}
+            {% for deplyment in deployments %}
                 <tr>
                     <td>
-                        {{ post.title }}
+                        {{ deplyment.name }}
                     </td>
                     <td>
-                       {{ post.body|truncatechars:10|linebreaks }}
-{#                        {{ post.body|truncatewords:10|linebreaks }}#}
+                        {{ deplyment.project.name }}
                     </td>
                     <td>
                         <div class="btn-group">
-                                <a href="{% url 'blog:post_update' post.pk %}">
-                                    <button class="btn btn-primary btn-xs">更新</button>
+                                <a href="#">
+                                    <button class="btn btn-primary btn-xs">开始</button>
                                 </a>
                                 <a>
                                     <button class="btn btn-danger btn-xs bookdelete" data-url="#">删除</button>
                                 </a>
-                            </div>
-                    </div>
+                        </div>
                     </td>
-
                 </tr>
             {% endfor %}
         </table>
 
-        <div class="panel panel-danger">
-            <div class="panel-heading">
-                <div class="panel-title">check 权限</div>
-            </div>
-            <div class="body">
-                <div class="list-group">
-                    <div>上下文携带当前用户的的所有perms</div>
-                    {{ perms }}<br>
-                    {{ perms.book.delete_book }}
-                </div>
-            </div>
-        </div>
+{#        <div class="panel panel-danger">#}
+{#            <div class="panel-heading">#}
+{#                <div class="panel-title">xxxx</div>#}
+{#            </div>#}
+{#            <div class="body">#}
+{#                <div class="list-group">#}
+{#                    <div>xxxx</div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
         {% include 'paginator.html' %}
+        {% else %}
+        暂时没有可以发布的任务
+    {% endif %}
     </div>
     </div>
     </div>

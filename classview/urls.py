@@ -47,6 +47,10 @@ urlpatterns = [
     # blog
     url(r'^blog/', include("blog.urls", namespace="blog")),
     
+    
+    # deployment
+    url(r'^deployment/', include("deployment.urls", namespace="deployment")),
+    
     # all in
     url(r'.*', RedirectView.as_view(pattern_name="home", query_string=True),),
 ]
