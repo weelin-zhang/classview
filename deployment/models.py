@@ -34,7 +34,10 @@ class Project(models.Model):
     
     class Meta:
         verbose_name_plural = "项目"
-    
+
+        permissions = [
+            ("deploy_project", "deploy project"),
+        ]
     def __str__(self):
         return self.name
     
@@ -46,6 +49,7 @@ class Deployment(models.Model):
     
     class Meta:
         verbose_name_plural = "发布任务"
+        # 最终没用到, 使用preject object permission
         permissions = [
             ("view_deployment", "view deployment"),
         ]

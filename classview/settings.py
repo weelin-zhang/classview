@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'blog',
     'deployment',
     'guardian',
+    'useradmin',
 ]
 
 MIDDLEWARE = [

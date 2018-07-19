@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load  line_str_of_user %}
+
+
+{% block title %}用户列表{% endblock  %}
+
+{% block content %}
+<div class="panel panel-default">
+  <div class="panel-heading">用户列表</div>
+  <div class="box-body" style="background-color: #ffffff">
+    <div style="width: 100%;height: 300px;">
+        <table class="table table-bordered">
+            <tr>
+                <th>username</th>
+                <th>email</th>
+                <th>superuser</th>
+            </tr>
+            {% for u in users %}
+                <tr>
+                    <td>{{ u.username }}</td>
+                    <td>{{ u.email }}</td>
+                    <td>{{ u.is_superuser }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% include "paginator.html" %}
+    </div>
+  </div>
+</div>
+
+{#<div class="panel panel-default">#}
+{#  <div class="panel-heading">用户组列表</div>#}
+{#  <div class="box-body" style="background-color: #ffffff">#}
+{#      empty#}
+{#  </div>#}
+{#</div>#}
+
+{% endblock %}
+
+
+{% block footer_script %}
+   <script>
+
+   </script>
+{% endblock %}

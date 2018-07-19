@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}发布权限管理{% endblock %}
+
+{% block breadcrumb %}
+    <li><a>发布权限管理</a></li>
+{% endblock %}
+
+
+{% block content %}
+<div class="col-md-12" style="height: 500px">
+  <div class="panel panel-success">
+    <div class="panel-heading">
+      <div class="panel-title">
+        <span class="page-header" style="font-size: 15px;">searchuser</span>
+      </div>
+    </div>
+    <div class="panel-body">
+      <form class="form form-inline">{% csrf_token %}
+        <div class="form-group inline">
+          <span for="selectuser">选择用户</span>
+          <select id="selectuser" name="selectuser" class="form-control" style="width: 200px;">
+            <option value="select_user">select_user</option>
+            {% for u in users %}
+              <option value="{{ u.id }}">{{ u.username }}</option>
+            {% endfor %}
+          </select>
+
+          <label for="selectproject">选择应用</label>
+          <select id="selectproject" name="selectproject" class="form-control" style="width: 200px">
+            <option value="select_project">select_project</option>
+              {% for p in projects %}
+                <option value="{{ p.id }}">{{ p.name }}</option>
+              {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+            <button type="button" class="btn btn-primary" id="addpermbtn">建立关联</button>
+            <button type="button" class="btn btn-danger" id="delpermbtn">解除关联</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block footer_script %}
+    <script>
+        $(function () {
+            $("#deployment_menu").addClass("active");
+            $("#menu_deployment_perm").addClass("active");
+
+            $("#selectuser").select2({});
+            $("#selectproject").select2({});
+
+            // 点击关联
+            $("#addpermbtn").click(function (event) {
+                event.preventDefault();
+                layer.confirm("确认给xx发布yy的权限吗?",function (index) {
+                    if ($("#selectuser").val() == "select_user" | $("#selectproject") == "select_preject"){
+                        layer.close(index);
+
+                    }else{
+                        console.log("验证通过");
+                        console.log("确认建立关联");
+                        layer.close(index);
+                    }
+                    $.ajax({
+                        type: "POST",
+                        url: "{% url 'deployment:deployment_perm' %}",
+                        data: $("form").serialize(),
+                        dataType: "json",
+                        beforeSend: function () {
+
+                            console.log("sendBefore");
+                        },
+                        success: function (resp, status) {
+                            if(resp.status == "0"){
+                                layer.msg("添加成功");
+                                console.log(resp.msg)
+                            }else{
+                                layer.msg("添加失败");
+                                console.log(resp.msg)
+                            }
+                        },
+                        error: function (xhr, err) {
+                            console.log(xhr.statusText)
+                        }
+                    });
+                });
+            });
+
+            // end
+        });
+
+    </script>
+{% endblock %}

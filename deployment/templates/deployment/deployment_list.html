@@ -22,13 +22,25 @@
         {% if deployments %}
         <table class="table table-bordered table-hover">
             <tr>
-                <th>
+                <th rowspan="2" style="padding: 26px">
                     标题
                 </th>
-                <th>
-                    项目
+                <th rowspan="2" style="padding: 26px">
+                    所属项目
                 </th>
-                <th>操作</th>
+                <th colspan="2">
+                    次级业务线
+                </th>
+                <th colspan="2">
+                    一级务线
+                </th>
+                <th rowspan="2" style="padding: 26px">操作</th>
+            </tr>
+            <tr>
+                <th>业务线</th>
+                <th>负责人</th>
+                <th>业务线</th>
+                <th>负责人</th>
             </tr>
             {% for deplyment in deployments %}
                 <tr>
@@ -39,9 +51,21 @@
                         {{ deplyment.project.name }}
                     </td>
                     <td>
+                        {{ deplyment.project.businessline.name }}
+                    </td>
+                    <td>
+                        {{ deplyment.project.owner.username }}
+                    </td>
+                    <td>
+                        {{ deplyment.project.businessline.topline.name }}
+                    </td>
+                    <td>
+                        {{ deplyment.project.businessline.topline.owner.username }}
+                    </td>
+                    <td>
                         <div class="btn-group">
                                 <a href="#">
-                                    <button class="btn btn-primary btn-xs">开始</button>
+                                    <button class="btn btn-primary btn-xs start_deploy">开始</button>
                                 </a>
                                 <a>
                                     <button class="btn btn-danger btn-xs bookdelete" data-url="#">删除</button>
@@ -74,8 +98,25 @@
 {% block footer_script %}
     <script>
         $(function () {
-            $("#app_menu").addClass("active");
-            $("#menu_app_book_list").addClass("active");
+            $("#deployment_menu").addClass("active");
+            $("#menu_deployment_list").addClass("active");
+            $("table tr").children().addClass("text-center");
+            $(".start_deploy").click(function (event) {
+                event.preventDefault();
+                var deploy_or_no = confirm("start this task?");
+                if(deploy_or_no){
+                    alert('go');
+                }else{
+                    alert('cancel');
+                }
+
+
+            });
+
+
+
+
+            // end
         });
 
     </script>

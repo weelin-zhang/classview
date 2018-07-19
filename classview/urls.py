@@ -51,6 +51,9 @@ urlpatterns = [
     # deployment
     url(r'^deployment/', include("deployment.urls", namespace="deployment")),
     
+    # useradmin
+    url(r'^useradmin/', include("useradmin.urls", namespace="useradmin")),
+    
     # all in
     url(r'.*', RedirectView.as_view(pattern_name="home", query_string=True),),
 ]

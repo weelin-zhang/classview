@@ -1,4 +1,5 @@
 {% load static %}
+{% load object_perm_set_check %}
 <!-- Left side column. contains the logo and sidebar -->
 <aside class="main-sidebar">
   <!-- sidebar: style can be found in sidebar.less -->
@@ -45,7 +46,7 @@
 
       </li>
 
-      <li id="app_menu" class="treeview">
+      <li id="blog_menu" class="treeview">
           <a href="#">
               <i class="fa fa-server"></i> <span>博客管理</span>
               <span class="pull-right-container">
@@ -56,7 +57,7 @@
               <li id="menu_blog_list"><a href="{% url 'blog:post_list' %}"><i class="fa fa-circle-o"></i>
                   博客列表</a></li>
 {#              <li id="menu_app_author_list"><a href="{% url 'app:app_author_list' %}"><i class="fa fa-circle-o"></i>作者列表</a></li>#}
-              <li id="menu_blog_post_json"><a href="{% url 'blog:post_show' %}"><i class="fa
+              <li id="menu_blog_perm_test"><a href="{% url 'blog:post_show' %}"><i class="fa
             fa-circle-o"></i>测试permission</a></li>
           </ul>
 
@@ -64,7 +65,7 @@
 
 
 
-      <li id="app_menu" class="treeview {% if not request.user.is_superuser %}hide{% endif %}">
+      <li id="api_menu" class="treeview {% if not request.user.is_superuser %}hide{% endif %}">
           <a href="#">
             <i class="fa fa-object-group"></i> <span>api管理</span>
             <span class="pull-right-container">
@@ -72,46 +73,46 @@
             </span>
           </a>
           <ul class="treeview-menu">
-              <li id="menu_server"><a href="{% url 'api:docs' %}"><i class="fa fa-circle-o"></i>swagger</a></li>
+              <li id="menu_api"><a href="{% url 'api:docs' %}"><i class="fa fa-circle-o"></i>swagger</a></li>
           </ul>
         </li>
-      <li id="menu_api" class="treeview">
-          <a href="#">
-            <i class="fa fa-database"></i> <span>任务编排</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-           <ul class="treeview-menu">
-                  <li id="menu_crontab" class="treeview">
-                      <a href="#"><i class="fa fa-circle-o"></i>定时任务
-                        <span class="pull-right-container">
-                            <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                      </a>
-                      <ul class="treeview-menu">
-                        <li id="crontab_create"><a href="{% url 'app:app_index' %}"><i class="fa
-                             fa-calendar-times-o"></i>添加计划</a></li>
-                        <li id="crontab_list"><a href="{% url 'app:app_index' %}"><i class="fa
-                             fa-list-alt"></i>任务列表</a></li>
-                      </ul>
-                  </li>
-                  <li id="menu_ansible" class="treeview">
-                      <a href="#"><i class="fa fa-circle-o"></i>Ansible
-                          <span class="pull-right-container">
-                              <i class="fa fa-angle-left pull-right"></i>
-                          </span>
-                      </a>
-                      <ul class="treeview-menu">
-                            <li id="ansible_create"><a href="{% url 'app:app_index' %}"><i class="fa
-                             fa-cogs"></i>添加任务</a></li>
-                            <li id="ansible_list"><a href="{% url 'app:app_index' %}"><i class="fa
-                            fa-list-alt"></i>任务列表</a></li>
-                      </ul>
-                  </li>
-              </ul>
-      </li>
-          <li id="menu_deployment" class="treeview">
+{#      <li id="menu_api" class="treeview">#}
+{#          <a href="#">#}
+{#            <i class="fa fa-database"></i> <span>任务编排</span>#}
+{#            <span class="pull-right-container">#}
+{#              <i class="fa fa-angle-left pull-right"></i>#}
+{#            </span>#}
+{#          </a>#}
+{#           <ul class="treeview-menu">#}
+{#                  <li id="menu_crontab" class="treeview">#}
+{#                      <a href="#"><i class="fa fa-circle-o"></i>定时任务#}
+{#                        <span class="pull-right-container">#}
+{#                            <i class="fa fa-angle-left pull-right"></i>#}
+{#                        </span>#}
+{#                      </a>#}
+{#                      <ul class="treeview-menu">#}
+{#                        <li id="crontab_create"><a href="{% url 'app:app_index' %}"><i class="fa#}
+{#                             fa-calendar-times-o"></i>添加计划</a></li>#}
+{#                        <li id="crontab_list"><a href="{% url 'app:app_index' %}"><i class="fa#}
+{#                             fa-list-alt"></i>任务列表</a></li>#}
+{#                      </ul>#}
+{#                  </li>#}
+{#                  <li id="menu_ansible" class="treeview">#}
+{#                      <a href="#"><i class="fa fa-circle-o"></i>Ansible#}
+{#                          <span class="pull-right-container">#}
+{#                              <i class="fa fa-angle-left pull-right"></i>#}
+{#                          </span>#}
+{#                      </a>#}
+{#                      <ul class="treeview-menu">#}
+{#                            <li id="ansible_create"><a href="{% url 'app:app_index' %}"><i class="fa#}
+{#                             fa-cogs"></i>添加任务</a></li>#}
+{#                            <li id="ansible_list"><a href="{% url 'app:app_index' %}"><i class="fa#}
+{#                            fa-list-alt"></i>任务列表</a></li>#}
+{#                      </ul>#}
+{#                  </li>#}
+{#              </ul>#}
+{#      </li>#}
+          <li id="deployment_menu" class="treeview">
             <a href="#">
               <i class="fa fa-area-chart"></i> <span>任务发布</span>
               <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span>
@@ -120,7 +121,12 @@
               <li id="menu_deployment_list"><a href="{% url 'deployment:deployment_list' %}"><i class="fa
               fa-circle-o"></i>
                   发布列表</a></li>
-              <li id="menu_deployment_order"><a href="#"><i class="fa fa-circle-o"></i> 发布清单</a></li>
+              {% with request.user|permission_managerment as has_perm_manage %}
+                  {% if has_perm_manage %}
+                      <li id="menu_deployment_perm"><a href="{% url 'deployment:deployment_perm' %}"><i class="fa fa-circle-o"></i>
+                          发布权限管理</a></li>
+                  {% endif %}
+              {% endwith %}
           </ul>
 
       </li>
@@ -148,17 +154,18 @@
       </li>
 
       -->
-    {% if request.user.is_superuser %}
-      <li id="menu_accounts" class="treeview">
-            <a href="#">
-              <i class="fa fa-users"></i> <span>用户管理</span>
-              <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span>
-            </a>
-          <ul class="treeview-menu">
-              <li id="menu_user"><a href="#"><i class="fa fa-circle-o"></i> 用户列表</a></li>
-          </ul>
-      </li>
-    {% endif %}
+
+        {% if request.user.is_superuser %}
+            <li id="menu_accounts" class="treeview">
+                  <a href="#">
+                    <i class="fa fa-users"></i> <span>用户管理</span>
+                    <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span>
+                  </a>
+                <ul class="treeview-menu">
+                    <li id="menu_user"><a href="{% url 'useradmin:user_list' %}"><i class="fa fa-circle-o"></i> 用户列表</a></li>
+                </ul>
+            </li>
+        {% endif %}
     </ul>
   </section>
   <!-- /.sidebar -->
