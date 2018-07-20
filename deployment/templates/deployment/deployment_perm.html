@@ -22,7 +22,7 @@
           <select id="selectuser" name="selectuser" class="form-control" style="width: 200px;">
             <option value="select_user">select_user</option>
             {% for u in users %}
-              <option value="{{ u.id }}">{{ u.username }}</option>
+              <option value="{{ u.id }}" style="background-color: red">{{ u.username }}</option>
             {% endfor %}
           </select>
 
@@ -51,6 +51,44 @@
             var parts = value.split("; " + name + "=");
             if (parts.length == 2) return parts.pop().split(";").shift();
         }
+
+        // 执行关联和清除关联之前判定是否存在关联关系
+        $("select").change(function (e) {
+            e.preventDefault();
+            var uid = $("#selectuser").val();
+            var pid = $("#selectproject").val();
+            if (uid != "select_user" && pid != "select_project"){
+{#                console.log("change");#}
+                $.ajax({
+                    url: "{% url 'deployment:deployment_checkperm' %}",
+                    type: "GET",
+                    dataType: "json",
+                    data: {uid: uid, pid: pid},
+                    success: function(resp, status){
+{#                        console.log(resp);#}
+                        if(resp.status === "0"){
+                            console.log("存在权限");
+                            $("#addpermbtn").attr("disabled", true);
+                            $("#addpermbtn").text("已经建立关联");
+
+                            $("#delpermbtn").text("解除关联");
+                            $("#delpermbtn").attr("disabled", false);
+                        }else{
+                            $("#delpermbtn").attr("disabled", true);
+                            $("#delpermbtn").text("无关联");
+
+                            $("#addpermbtn").text("建立关联");
+                            $("#addpermbtn").attr("disabled", false);
+                            console.log("不存在权限")
+                        }
+                    }
+                });
+            }else{
+                $("#addpermbtn").attr("disabled", true);
+                $("#delpermbtn").attr("disabled", true);
+            }
+
+        });
         $(function () {
             $("#deployment_menu").addClass("active");
             $("#menu_deployment_perm").addClass("active");
@@ -58,11 +96,47 @@
             $("#selectuser").select2({});
             $("#selectproject").select2({});
 
+            // 执行关联和清除关联动作之前, 异步判定是否存在关联关系
+            $("select").change(function (e) {
+                e.preventDefault();
+                var uid = $("#selectuser").val();
+                var pid = $("#selectproject").val();
+                if (uid != "select_user" && pid != "select_project"){
+                    {#                console.log("change");#}
+                    $.ajax({
+                        url: "{% url 'deployment:deployment_checkperm' %}",
+                        type: "GET",
+                        dataType: "json",
+                        data: {uid: uid, pid: pid},
+                        success: function(resp, status){
+                            {#                        console.log(resp);#}
+                            if(resp.status === "0"){
+                                console.log("存在权限");
+                                $("#addpermbtn").attr("disabled", true);
+                                $("#addpermbtn").text("已经建立关联");
+
+                                $("#delpermbtn").text("解除关联");
+                                $("#delpermbtn").attr("disabled", false);
+                            }else{
+                                $("#delpermbtn").attr("disabled", true);
+                                $("#delpermbtn").text("无关联");
+
+                                $("#addpermbtn").text("建立关联");
+                                $("#addpermbtn").attr("disabled", false);
+                                console.log("不存在权限")
+                            }
+                        }
+                    });
+                }
+            });
+
             // 点击关联
             $("#addpermbtn").click(function (event) {
                 event.preventDefault();
+                var uid = $("#selectuser").val();
+                var pid = $("#selectproject").val();
                 layer.confirm("确认给xx发布yy的权限吗?",function (index) {
-                    if ($("#selectuser").val() == "select_user" | $("#selectproject").val() == "select_project"){
+                    if (uid === "select_user" | pid === "select_project"){
                         console.log("验证不通过");
                         layer.msg("请选择正确的用户和权限");
                         layer.close(index);
@@ -82,7 +156,7 @@
                             console.log("sendBefore");
                         },
                         success: function (resp, status) {
-                            if(resp.status == "0"){
+                            if(resp.status === "0"){
                                 layer.msg("添加成功");
                                 console.log(resp.msg)
                             }else{

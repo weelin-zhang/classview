@@ -28,8 +28,11 @@ class BusinessLine(models.Model):
     
 
 class Project(models.Model):
+    '''
+    owner是业务小组的leader, 并没有分配给普通的研发人员
+    '''
     name = models.CharField(max_length=64, unique=True, verbose_name="项目")
-    owner = models.ForeignKey(User, related_name="projects", verbose_name="小组leader")
+    owner = models.ForeignKey(User, related_name="projects", verbose_name="项目负责人")
     businessline = models.ForeignKey(BusinessLine, related_name="projects", verbose_name="所属业务线")
     
     class Meta:

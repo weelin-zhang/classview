@@ -14,7 +14,11 @@ api-->集成swagger
 
 blog --->测试permissions
 
-deployment---->实现权限分级，admin--leader--staff
+deployment---->实现权限分级，admin--leader--staff,基于project,使用object permission实现
+superuser可以给任何人员分配权限,
+顶级用户可以给其下一级所有小组leader分配权限(前提自己有某一对象的权限)
+小组leader可以为任何一个一线研发任务分配权限
+
 
 
 
