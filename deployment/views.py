@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import HttpResponse,JsonResponse
 from django.views.generic.base import View
 from django.views.generic.list import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from deployment.models import Project
 from .models import Deployment
 
-from guardian.shortcuts import get_perms, assign_perm
+from guardian.shortcuts import get_perms, assign_perm, remove_perm
 # Create your views here.
 
 from guardian.shortcuts import get_objects_for_user
@@ -83,3 +83,26 @@ class ProjectDeployManage(LoginRequiredMixin, View):
         
         return JsonResponse({"status": code, "msg": msg})
     
+    def delete(self, request):
+        import json
+        code, msg = "1",""
+        args_str = request.body.decode("UTF-8")
+        arg_dict = dict(arg.split("=") for arg in args_str.split("&") if "csrfmiddlewaretoken" not in arg)
+        
+        u_id = arg_dict.get("selectuser", 0)
+        u_obj = User.objects.filter(pk=int(u_id))
+        p_id = arg_dict.get("selectproject", 0)
+        p_obj = Project.objects.filter(pk=int(p_id))
+    
+        if not p_obj or not u_obj:
+            msg = "不存在该项目"
+    
+        try:
+            remove_perm(self.perm, u_obj[0], p_obj[0])
+            code = "0"
+            msg="权限解除成功"
+        except Exception as e:
+            msg = str(e)
+            print(e)
+        
+        return  JsonResponse({"msg": msg, "status": code})

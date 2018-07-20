@@ -46,6 +46,11 @@
 
 {% block footer_script %}
     <script>
+        function getCookie(name) {
+            var value = "; " + document.cookie;
+            var parts = value.split("; " + name + "=");
+            if (parts.length == 2) return parts.pop().split(";").shift();
+        }
         $(function () {
             $("#deployment_menu").addClass("active");
             $("#menu_deployment_perm").addClass("active");
@@ -57,7 +62,9 @@
             $("#addpermbtn").click(function (event) {
                 event.preventDefault();
                 layer.confirm("确认给xx发布yy的权限吗?",function (index) {
-                    if ($("#selectuser").val() == "select_user" | $("#selectproject") == "select_preject"){
+                    if ($("#selectuser").val() == "select_user" | $("#selectproject").val() == "select_project"){
+                        console.log("验证不通过");
+                        layer.msg("请选择正确的用户和权限");
                         layer.close(index);
 
                     }else{
@@ -90,6 +97,47 @@
                 });
             });
 
+            // delperm
+            // 解除关联
+
+            $("#delpermbtn").click(function (event) {
+                event.preventDefault();
+                layer.confirm("确认解除xx发布yy的权限吗?",function (index) {
+                    if ($("#selectuser").val() == "select_user" | $("#selectproject") == "select_preject"){
+                        layer.msg("请选择正确的用户和权限");
+                        layer.close(index);
+
+                    }else{
+                        console.log("验证通过");
+                        console.log("确认解除关联");
+                        layer.close(index);
+                    }
+                    $.ajax({
+                        type: "DELETE",
+                        url: "{% url 'deployment:deployment_perm' %}",
+                        data: $("form").serialize(),
+                        dataType: "json",
+                        beforeSend: function(xhr) {
+                            xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+                            console.log("sendBefore");
+                        },
+                        success: function (resp, status) {
+                            if(resp.status == "0"){
+                                layer.msg("关联解除成功");
+                                console.log(resp.msg)
+                            }else{
+                                layer.msg("关联解除失败");
+                                console.log(resp.msg)
+                            }
+                        },
+                        error: function (xhr, errinfo, errobj) {
+                            console.log(xhr);
+                            console.log(errinfo);
+                            console.log(errobj);
+                        }
+                    });
+                });
+            });
             // end
         });
 
