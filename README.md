@@ -63,6 +63,12 @@ def get_perms(user_or_group, obj):
         获取user或者group针对obj拥有的object permission
         返回此user or group所拥有的所有的object permission的列表:
         eg: ['change_post']
+
+        补充:
+          django.contrib.auth.models.User的实例的定义的has_perm方法:
+          1. user.has_perm(perm, obj)表示object permission
+          2. user.has_perm(perm)表示global permission
+          3. 表示global permission时, 要用app_label.codename
     '''
     pass
 
@@ -74,6 +80,8 @@ def get_user_perms(user, obj):
         获取user针对obj拥有的object permission
         返回此user or group所拥有的所有的object permission的列表:
         eg: <QuerySet ['change_post', 'delete_post']>
+
+        补充: superuser无法使用get_user_perms(admin, obj)获得object perms
     '''
     pass
 
@@ -144,7 +152,7 @@ def get_objects_for_user(user, perms, klass=None, use_groups=True, any_perm=Fals
 
         user: 用户
         perms: 用户需要拥有的object permissions(perms中的 perm必须属于同一个Model, 即相同的app_label)
-        klass: Model or queryset or manager
+        klass: 当没有个klas时, perm是必须是完整的(app_label.codename),Model or queryset or manager(manager时,输出为管理器对象)
         use_groups: 默认为True, user表示匹配的object permission可以继承自group
         any_perm: 默认Fasle, 否则perms中有一个就算
         with_superuser: 默认True, 当为False时，哪怕user=admin也返回一个空的集合

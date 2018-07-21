@@ -6,4 +6,6 @@ urlpatterns = [
     url(r'^create/$', PostCreateView.as_view(), name="post_create"),
     url(r'^list', PostListView.as_view(), name="post_list"),
     url(r'^update/(?P<pk>\d+)/$', PostUpdateView.as_view(), name="post_update"),
+    
+    url(r'^detail/(?P<pk>\w+)/$', post_detail, name="post_detail"),
 ]

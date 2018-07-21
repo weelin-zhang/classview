@@ -71,3 +71,13 @@ class PostUpdateView(UpdateView):
     form_class = PostModelForm
     template_name = "blog/post_update.html"
     success_url = reverse_lazy("blog:post_list")
+    
+
+# 测试object permission 装饰器
+from guardian.decorators import permission_required_or_403
+
+from django.http import HttpResponse
+@permission_required_or_403("blog.delete_post", (Post, 'pk', 'pk'))
+def post_detail(request, pk):
+    p = Post.objects.get(pk=pk)
+    return HttpResponse(p.title)

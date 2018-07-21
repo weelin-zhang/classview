@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load guardian_tags %}
 
 {% block title %}博客列表{% endblock %}
 
@@ -16,6 +17,7 @@
                 <a href="{% url 'blog:post_create' %}"><button class="btn btn-primary
                 pull-right">Add</button></a>
             </div>
+
         </div>
     <div class="panel-body">
         <table class="table table-bordered table-hover">
@@ -42,11 +44,14 @@
                                 <a href="{% url 'blog:post_update' post.pk %}">
                                     <button class="btn btn-primary btn-xs">更新</button>
                                 </a>
+
+                            {% get_obj_perms request.user for post as "obperms" %}
+                            {% if 'delete_post' in obperms %}
                                 <a>
-                                    <button class="btn btn-danger btn-xs bookdelete" data-url="#">删除</button>
+                                <button class="btn btn-danger btn-xs bookdelete" data-url="#">删除</button>
                                 </a>
-                            </div>
-                    </div>
+                            {% endif %}
+                        </div>
                     </td>
 
                 </tr>
@@ -59,13 +64,16 @@
             </div>
             <div class="body">
                 <div class="list-group">
-                    <div>上下文携带当前用户的的所有perms</div>
-                    {{ perms }}<br>
-                    {{ perms.book.delete_book }}
-                </div>
+{#                    <div>上下文携带当前用户的的所有perms</div>#}
+{#                    {{ perms }}<br>#}
+{#                    {{ perms.book.delete_book }}#}
+{#                    <br>#}
+{#                </div>#}
+                    当用户对该obj有delete_post时，显示删除选项
             </div>
         </div>
         {% include 'paginator.html' %}
+    </div>
     </div>
     </div>
     </div>

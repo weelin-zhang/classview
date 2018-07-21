@@ -1,10 +1,11 @@
 from django.contrib import admin
 from .models import TopLine, BusinessLine, Project, Deployment
 # Register your models here.
+from guardian.admin import GuardedModelAdmin
 
 
 
-class TopLineAdmin(admin.ModelAdmin):
+class TopLineAdmin(GuardedModelAdmin):
     list_display = ("name", "owner",)
 
 
@@ -13,7 +14,7 @@ class BusinessLineAdmin (admin.ModelAdmin):
     list_filter = ("name",)
 
 
-class ProjectAdmin(admin.ModelAdmin):
+class ProjectAdmin(GuardedModelAdmin):
     list_display = ("name", "owner", "businessline",)
     search_fields = ("owner", "businessline",)
 

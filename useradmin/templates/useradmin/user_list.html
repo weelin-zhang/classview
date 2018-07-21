@@ -1,9 +1,16 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load  line_str_of_user %}
 
 
 {% block title %}用户列表{% endblock  %}
 
+{% block header_css %}
+    <link rel="stylesheet"  href="{% static 'useradmin/css/base.css' %}">
+    <link rel="stylesheet"  href="{% static 'useradmin/css/forms.css' %}">
+    <link rel="stylesheet"  href="{% static 'useradmin/css/widgets.css' %}">
+    <link rel="stylesheet"  href="{% static 'useradmin/css/fonts.css' %}">
+{% endblock %}
 {% block content %}
 <div class="panel panel-default">
   <div class="panel-heading">用户列表</div>
@@ -28,18 +35,50 @@
   </div>
 </div>
 
-{#<div class="panel panel-default">#}
-{#  <div class="panel-heading">用户组列表</div>#}
-{#  <div class="box-body" style="background-color: #ffffff">#}
-{#      empty#}
-{#  </div>#}
-{#</div>#}
+<div class="panel panel-default">
+  <div class="panel-heading">用户组列表</div>
+  <div class="box-body" style="background-color: #ffffff">
+        <div class="form-row group_permissions">
+            <label for="id_permissions">Permissions:</label>
+        <div class="selector">
+            <div class="selector-available">
+                <h2 style="margin: 0;height:30px;line-height: 30px;">AvailablePermissions</h2>
+                <p id="id_permissions_filter" class="selector-filter">
+                    <label for="id_permissions_input">
+                        <span class="glyphicon glyphicon-search"> </span>
+                    </label>
+                    <input type="text" placeholder="Filter" id="id_permissions_input">
+                </p>
+                <select name="permissions_old" id="id_permissions_from"
+                        multiple="multiple"
+                        class="filtered"
+                        data-field-name="Permissions" data-is-stacked="0">
+                    <option value="add_project" title="Can add project">Can add project</option>
+                    <option value="change_project" title="Can change project">Can change project</option>
+                    <option value="delete_project" title="Can delete project">Can delete project</option>
+                </select>
+                <a title="Click to choose all Permissions at once." href="#" id="id_permissions_add_all_link" class="selector-chooseall active">Choose all</a>
+            </div>
+            <ul class="selector-chooser">
+                <li><a title="Choose" href="#" id="id_permissions_add_link" class="selector-add">Choose</a></li>
+                <li><a title="Remove" href="#" id="id_permissions_remove_link" class="selector-remove">Remove</a></li>
+            </ul>
+            <div class="selector-chosen">
+                <h2 style="margin: 0;height:30px;line-height: 30px;">Chosen Permissions</h2>
+                <select id="id_permissions_to" multiple="multiple" size="0" name="permissions" class="filtered">
+                    <option value="deploy_project" title="deploy project">deploy project</option>
+                </select>
+                <a title="Click to remove all chosen Permissions at once." href="#" id="id_permissions_remove_all_link" class="selector-clearall active">Remove all</a>
+            </div>
+        </div>
+        </div>
+  </div>
+</div>
 
 {% endblock %}
 
 
 {% block footer_script %}
    <script>
-
    </script>
 {% endblock %}

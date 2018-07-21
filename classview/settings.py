@@ -156,3 +156,16 @@ REST_FRAMEWORK = {
         # 'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     )
 }
+
+# guardian permission_required_or_403, 使用
+# GUARDIAN_RENDER_403 = True
+# GUARDIAN_TEMPLATE_403 = '403.html'
+
+# guardian permission_required_or_403, 使用
+# GUARDIAN_RENDER_404 = True
+# GUARDIAN_TEMPLATE_404 = '403.html'
+
+# 抛出异常，被外部handler403捕获
+# GUARDIAN_RAISE_403 =True
+# 抛出异常，被外部handler404捕获
+# GUARDIAN_RAISE_404 =True

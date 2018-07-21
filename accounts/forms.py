@@ -21,7 +21,8 @@ class LoginForm(forms.Form):
         super().full_clean()
 
     def clean(self):
-        print("clean 方法字clean_field()后执行,判断逻辑也可放在这里")
+        print("clean 方法在clean_field()后执行,判断逻辑也可放在这里")
+        # raise forms.ValidationError(u'此账号已被禁用')
         return self.cleaned_data
 
     def clean_username(self):
