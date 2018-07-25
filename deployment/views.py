@@ -27,6 +27,11 @@ class DeploymentListView(LoginRequiredMixin, PermissionListMixin, ListView):
         for p in queryset:
             deploymentqueryset.extend(p.deployments.all())
         return deploymentqueryset
+
+    # def get_get_objects_for_user_kwargs(self, queryset):
+    #     d  = super().get_get_objects_for_user_kwargs(queryset)
+    #     print("d:",d)
+    #     return d
     
     # def get_queryset(self):
     #     user = self.request.user
@@ -37,8 +42,7 @@ class DeploymentListView(LoginRequiredMixin, PermissionListMixin, ListView):
     #         deploymentqueryset.extend(p.deployments.all())
     #     return deploymentqueryset
     #     return super().get_queryset()
-        
-        
+    
 class ProjectDeployManage(LoginRequiredMixin, View):
     perm = 'deploy_project'
     
