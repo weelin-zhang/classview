@@ -15,7 +15,9 @@ def page_error(request):
     return render(request, "500.html")
 
 
+# from guardian.mixins import LoginRequiredMixin,和django.contrib.auth.mixins.LoginRequiredMixin效果一样
 class HomeView(LoginRequiredMixin, TemplateView):
+# class HomeView(TemplateView):
     template_name = "home.html"
     
     # 可以重写方法

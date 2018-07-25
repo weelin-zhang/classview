@@ -11,25 +11,32 @@ from guardian.shortcuts import get_perms, assign_perm, remove_perm, get_users_wi
 # Create your views here.
 
 from guardian.shortcuts import get_objects_for_user
+from guardian.mixins import PermissionListMixin
 
-
-
-class DeploymentListView(LoginRequiredMixin, ListView):
-    paginate_by = 2
-    model = Deployment
+# 使用装饰器可以避免get_objects_for_user了
+class DeploymentListView(LoginRequiredMixin, PermissionListMixin, ListView):
+    permission_required = "deployment.deploy_project"
+    paginate_by = 10
+    model = Project
     context_object_name = "deployments"
     template_name = "deployment/deployment_list.html"
     
-    
-    def get_queryset(self):
-        user = self.request.user
-        perms = ['deployment.deploy_project']
-        project_queryobject = get_objects_for_user(user, perms, use_groups=False, accept_global_perms=False)
+    def get_queryset(self, *args, **kwargs):
+        queryset = super().get_queryset(*args, **kwargs)
         deploymentqueryset = []
-        for p in project_queryobject:
+        for p in queryset:
             deploymentqueryset.extend(p.deployments.all())
         return deploymentqueryset
-        # return super().get_queryset()
+    
+    # def get_queryset(self):
+    #     user = self.request.user
+    #     perms = 'deployment.deploy_project'
+    #     project_queryobject = get_objects_for_user(user, perms, use_groups=False, accept_global_perms=False)
+    #     deploymentqueryset = []
+    #     for p in project_queryobject:
+    #         deploymentqueryset.extend(p.deployments.all())
+    #     return deploymentqueryset
+    #     return super().get_queryset()
         
         
 class ProjectDeployManage(LoginRequiredMixin, View):
